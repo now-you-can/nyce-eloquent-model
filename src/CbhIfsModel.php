@@ -1,9 +1,7 @@
 <?php
 
-namespace Cartbeforehorse\DbModels;
+namespace Nyce\DbModels;
 
-use Cartbeforehorse\Validation\ValidationSys;
-use Cartbeforehorse\Validation\CodingError;
 use Yajra\Oci8\Eloquent\OracleEloquent as YajraModel;
 use Yajra\Pdo\Oci8\Exceptions\Oci8Exception;
 use \DB;
@@ -95,16 +93,16 @@ class CbhIfsModel extends YajraModel {
      * database.  In fact, there are a bunch of functions we need to catch.
      */
     public static function create (array $attributes = []) {
-        CodingError::RaiseCodingError ('Direct insert on tables is not allowed in IfsModel{}');
+        throw new \LogicException('Direct insert on tables is not allowed in IfsModel{}');
     }
     public function save (array $options = []) {
-        CodingError::RaiseCodingError ('Direct update on tables is not allowed in IfsModel{}');
+        throw new \LogicException('Direct update on tables is not allowed in IfsModel{}');
     }
     public function forceSave (array $options = []) {
-        CodingError::RaiseCodingError ('Direct update on tables is not allowed in IfsModel{}');
+        throw new \LogicException('Direct update on tables is not allowed in IfsModel{}');
     }
     public function fillable (array $fillable) {
-        CodingError::RaiseCodingError ('$fillable array not updatable in IfsModel{}');
+        throw new \LogicException('$fillable array not updatable in IfsModel{}');
     }
 
 
@@ -153,7 +151,7 @@ class CbhIfsModel extends YajraModel {
                     $val = $colval ? 'true' : 'false';
                     break;
                 default:
-                    CodingError::RaiseCodingError ("Invalid type: $coltype, cannot process these as strings!!", E_USER_ERROR);
+                    throw new \LogicException("Invalid type: $coltype, cannot process these as strings!!");
                     break;
             }
 

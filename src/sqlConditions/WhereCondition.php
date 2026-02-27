@@ -1,8 +1,7 @@
 <?php
 
-namespace Cartbeforehorse\DbModels\sqlConditions;
+namespace Nyce\DbModels\sqlConditions;
 
-use Cartbeforehorse\Validation\ValidationSys;
 use Carbon\Carbon;
 
 /*********
@@ -51,7 +50,7 @@ class WhereCondition {
         elseif ( in_array ($query_values_arr[0], ['!','%']) ) {
             $this->condition = $query_values_arr[0]=='%' ? 'whereNotNull' : 'whereNull';
         }
-        elseif ($datatype == 'string' && ( ValidationSys::StringContains('%',$this->user_val[0]) || ValidationSys::StringContains('_',$this->user_val[0])) ) {
+        elseif ($datatype == 'string' && ( str_contains($this->user_val[0], '%') || str_contains($this->user_val[0], '_')) ) {
             $this->condition = ($this->condition=='!=') ? 'not like' : 'like';
         }
 
@@ -151,8 +150,8 @@ class WhereCondition {
 
         $val0 = $this->val[0];
         $val1 = $this->val[1] ?? null;
-        $val0 = (ValidationSys::IsClassOrSubclassOf ($val0, 'Carbon\Carbon')) ? $val0->format('Y-m-d H:i:s') : $val0;
-        $val1 = (ValidationSys::IsClassOrSubclassOf ($val1, 'Carbon\Carbon')) ? $val1->format('Y-m-d H:i:s') : $val1;
+        $val0 = ($val0 instanceof Carbon) ? $val0->format('Y-m-d H:i:s') : $val0;
+        $val1 = ($val1 instanceof Carbon) ? $val1->format('Y-m-d H:i:s') : $val1;
         # see also: http://carbon.nesbot.com/docs/#api-formatting
 
         if ( !$this->valid ) {
@@ -167,7 +166,7 @@ class WhereCondition {
             return "!=$val0..$val1";
         } else {
             // like, =, !=, >, >=, <, <=
-            return ValidationSys::InArray($this->condition, ['=','like']) ? $val0 : $this->condition . $val0;
+            return in_array($this->condition, ['=','like'], true) ? $val0 : $this->condition . $val0;
         }
     }
 

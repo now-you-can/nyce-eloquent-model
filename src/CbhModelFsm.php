@@ -1,6 +1,6 @@
 <?php
 
-namespace Cartbeforehorse\DbModels;
+namespace Nyce\DbModels;
 
 use Illuminate\Contracts\Support\MessageProvider;
 use Watson\Validating\ValidatingInterface as iWatsonValidation;

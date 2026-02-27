@@ -1,6 +1,6 @@
 <?php
 
-namespace Cartbeforehorse\DbModels\Builders;
+namespace Nyce\DbModels\Builders;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder    as QueryBuilder;
