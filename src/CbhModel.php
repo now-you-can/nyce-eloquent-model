@@ -1,6 +1,6 @@
 <?php
 
-namespace Cartbeforehorse\DbModels;
+namespace Nyce\DbModels;
 
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Database\Eloquent\Model    as EloquentModel;

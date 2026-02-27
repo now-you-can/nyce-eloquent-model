@@ -1,11 +1,11 @@
 <?php
 
-namespace Cartbeforehorse\DbModels;
+namespace Nyce\DbModels;
 
 use \PHPUnit\Framework\TestCase;
 
 /**
- *  Corresponding Class to test Cartbeforehorse\DbModels\CbhModel
+ *  Corresponding Class to test Nyce\DbModels\CbhModel
  *  @author Osian ap Garth / CBH Software
  */
 class CbhModelTest extends TestCase {

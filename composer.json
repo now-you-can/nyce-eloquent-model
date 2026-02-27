@@ -10,15 +10,10 @@
             "email": "osian.ap.garth@nyce.software"
         }
     ],
-    "repositories" : [{
-        "type" : "vcs",
-        "url"  : "https://github.com/cartbeforehorse/cbh-validation.git"
-    }],
     "require": {
         "php"                             : ">=8.0",
         "watson/validating"               : ">=7",
         "sebdesign/laravel-state-machine" : ">=3",
-        "cartbeforehorse/cbh-validation"  : ">=0.0.1",
         "yajra/laravel-oci8"              : ">=9"
     },
     "require-dev": {
@@ -26,17 +21,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Cartbeforehorse\\DbModels\\": "src/"
+            "Nyce\\DbModels\\": "src/"
         }
     },
-    "autoload-dev": {
-        "classmap": [
-            "./../cbh-validation"
-        ],
-        "exclude-from-classmap": [
-            "vendor/cartbeforehorse/cbh-validation"
-        ]
-    },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }

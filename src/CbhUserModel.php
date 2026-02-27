@@ -1,6 +1,6 @@
 <?php
 
-namespace Cartbeforehorse\DbModels;
+namespace Nyce\DbModels;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;

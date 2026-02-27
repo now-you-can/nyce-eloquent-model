@@ -1,15 +1,14 @@
 <?php
 
-namespace Cartbeforehorse\DbModels;
+namespace Nyce\DbModels;
 
-use Cartbeforehorse\DbModels\sqlConditions\WhereCondition;
-use Cartbeforehorse\DbModels\Builders\CbhBuilder;
-use Cartbeforehorse\Validation\ValidationSys;
-use Cartbeforehorse\Validation\CodingError;
+use Nyce\DbModels\sqlConditions\WhereCondition;
+use Nyce\DbModels\Builders\CbhBuilder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression as RawExpression;
+use Illuminate\Validation\ValidationException as LaravelValidationException;
 use Watson\Validating\ValidatingTrait as tWatsonValidation;
 use Exception;
 
@@ -137,7 +136,7 @@ trait tCbhModel {
     /**
      * Override the standard Builder with my version...
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Cartbeforehorse\DbModels\Builders\CbhBuilder which extends \Illuminate\Database\Eloquent\Builder|static
+     * @return \Nyce\DbModels\Builders\CbhBuilder which extends \Illuminate\Database\Eloquent\Builder|static
      */
     public function newEloquentBuilder ($query)
     {
@@ -297,7 +296,11 @@ trait tCbhModel {
     public function scopeFetchByPk ($builder, array $key_values)
     {
         // check that the given values are indeed Primary Key
-        ValidationSys::ArrayKeysEqual (array_flip($this->primaryKey), $key_values, true);
+        $expectedKeys = sort($this->primaryKey);
+        $actualKeys = sort(array_keys($key_values));
+        if ($expectedKeys !== $actualKeys) {
+            throw new \LogicException('Array keys do not match expected primary key set.');
+        }
 
         foreach ($this->primaryKey as $key_col) {
             $builder -> where ($key_col, $key_values[$key_col]);
@@ -320,20 +323,20 @@ trait tCbhModel {
      */
     public function getColType ($col) {
         if ( !isset($this->casts[$col]) ) {
-            CodingError::RaiseCodingError ("Column '$col' needs to be defined in casts array in " . get_class($this));
+            throw new \LogicException("Column '$col' needs to be defined in casts array in " . get_class($this));
         } else {
-            if ( ValidationSys::InArray ($this->casts[$col], ['integer','real','float','double']) )
+            if ( in_array($this->casts[$col], ['integer','real','float','double'], true) )
                 return 'number';
             elseif ( $this->casts[$col] == 'boolean' )
                 return 'boolean';
-            elseif ( ValidationSys::InArray ($this->casts[$col], ['date','datetime','timestamp']) )
+            elseif ( in_array($this->casts[$col], ['date','datetime','timestamp'], true) )
                 return 'date';
-            elseif ( ValidationSys::InArray ($this->casts[$col], ['string']) )
+            elseif ( in_array($this->casts[$col], ['string'], true) )
                 return 'string';
-            elseif ( ValidationSys::InArray ($this->casts[$col], ['object','array','collection']) )
-                CodingError::RaiseCodingError ("Data Type [{$this->casts[$col]}] not managed in " . __METHOD__);
+            elseif ( in_array($this->casts[$col], ['object','array','collection'], true) )
+                throw new \LogicException("Data Type [{$this->casts[$col]}] not managed in " . __METHOD__);
             else
-                CodingError::RaiseCodingError (
+                throw new \LogicException(
                     "Unknown Type [{$this->casts[$col]}] on column $col, object " . get_class($this) . ", in " . __METHOD__ .
                     "  Valid types are [integer, real, float, double, boolean, date, datetime, timestamp, string]"
                 );
@@ -396,7 +399,7 @@ trait tCbhModel {
             $this->usr_srch[$col]['clean_search']    = $srch_clean;
             $this->usr_srch[$col]['executed_search'] = '';
 
-            if (ValidationSys::IsNonEmptyString ($this->usr_srch[$col]['clean_search'])) {
+            if (is_string($this->usr_srch[$col]['clean_search']) && trim($this->usr_srch[$col]['clean_search']) !== '') {
                 // loop on each 'OR' condition
                 foreach (explode (';', $this->usr_srch[$col]['clean_search']) as $nr => $col_srch) {
                     // loop on each 'AND' condition
@@ -409,9 +412,15 @@ trait tCbhModel {
 
                 // implode the clean search that we are about to execute so that we can return it to the client if required
                 foreach ( $this->usr_srch[$col]['executed_search'] as $ix => $and_arr ) {
-                    $this->usr_srch[$col]['executed_search'][$ix] = ValidationSys::ImplodeIgnoringNulls ('|', $and_arr);
+                    $this->usr_srch[$col]['executed_search'][$ix] = implode(
+                        '|',
+                        array_values(array_filter($and_arr, static fn ($v) => $v !== null && $v !== ''))
+                    );
                 }
-                $this->usr_srch[$col]['executed_search'] = ValidationSys::ImplodeIgnoringNulls (';', $this->usr_srch[$col]['executed_search']);
+                $this->usr_srch[$col]['executed_search'] = implode(
+                    ';',
+                    array_values(array_filter($this->usr_srch[$col]['executed_search'], static fn ($v) => $v !== null && $v !== ''))
+                );
 
 
                 //
@@ -483,6 +492,22 @@ trait tCbhModel {
     // getters
     public function getMessageBag() {
         return $this->getErrors();
+    }
+
+    /**
+     * Convert model validation failures to Laravel's standard exception type.
+     */
+    public function isValidOrFail()
+    {
+        if ($this->isValid()) {
+            return true;
+        }
+
+        $messages = method_exists($this->getErrors(), 'getMessages')
+            ? $this->getErrors()->getMessages()
+            : [];
+
+        throw LaravelValidationException::withMessages($messages);
     }
     public function getUserSearch() {
         return $this->usr_srch;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cartbeforehorse\DbModels;
+namespace Nyce\DbModels;
 
 use SM\StateMachine\StateMachine;
 
