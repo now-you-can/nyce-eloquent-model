@@ -1,5 +1,5 @@
 {
-    "name"        : "cartbeforehorse/cbh-model",
+    "name"        : "now-you-can/nyce-eloquent-model",
     "description" : "Extending and combining all the best vendor extensions to Eloquent Models",
     "keywords"    : ["laravel", "eloquent", "model", "validation", "dual-pk", "finite-state-machine", "fsm"],
     "type"        : "library",
@@ -7,7 +7,7 @@
     "authors": [
         {
             "name": "Osian ap Garth",
-            "email": "osian.ap.garth@cbhsoftware.com"
+            "email": "osian.ap.garth@nyce.software"
         }
     ],
     "repositories" : [{
