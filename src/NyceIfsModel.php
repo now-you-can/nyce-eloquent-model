@@ -7,9 +7,9 @@ use Yajra\Pdo\Oci8\Exceptions\Oci8Exception;
 use \DB;
 use \PDO;
 
-class CbhIfsModel extends YajraModel {
+class NyceIfsModel extends YajraModel {
 
-    use tCbhModel;
+    use tNyceModel;
 
     protected $connection = 'oracle';
     public    $timestamps = false;

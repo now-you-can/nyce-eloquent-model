@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model    as EloquentModel;
 use Watson\Validating\ValidatingInterface as iWatsonValidation;
 
 /**
- *  CbhModel{}
+ *  NyceModel{}
  *
- *  @author Osian ap Garth / CBH Software
+ *  @author Osian ap Garth / Nyce Software
  */
-class CbhModel extends EloquentModel implements MessageProvider, iWatsonValidation {
+class NyceModel extends EloquentModel implements MessageProvider, iWatsonValidation {
 
-    use tCbhModel;
+    use tNyceModel;
 
 }

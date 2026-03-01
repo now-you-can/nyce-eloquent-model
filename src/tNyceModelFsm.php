@@ -5,14 +5,14 @@ namespace Nyce\DbModels;
 use SM\StateMachine\StateMachine;
 
 /**
- *  tCbhModelFsm{}
+ *  tNyceModelFsm{}
  *     An FSM trait to extend the base Eloquent Model functionality.
  *     >> https://gist.github.com/iben12/7e24b695421d92cbe1fec3eb5f32fc94
  *     >> https://github.com/winzou/state-machine/blob/master/examples/simple.php
  *
- *  @author Osian ap Garth / CBH Software
+ *  @author Osian ap Garth / Nyce Software
  */
-trait tCbhModelFsm {
+trait tNyceModelFsm {
 
     protected $_moStateMachine; // Object of type \SM\StateMachine\StateMachine
     protected $_mFsmGraph;      // Array containing Winzou-compliant graph of the FSM

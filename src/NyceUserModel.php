@@ -14,16 +14,16 @@ use Illuminate\Contracts\Support\MessageProvider;
 use Watson\Validating\ValidatingInterface as iWatsonValidation;
 
 /**
- *  CbhUserModel{}
- *  @author Osian ap Garth / CBH Software
+ *  NyceUserModel{}
+ *  @author Osian ap Garth / Nyce Software
  *
  *  Copied from Laravel's own Illuminate\Foundation\Auth\User user class, only
  *  we need to extend it with our own trait
  */
-class CbhUserModel extends Model implements
+class NyceUserModel extends Model implements
     AuthenticatableContract, AuthorizableContract, CanResetPasswordContract,
     MessageProvider, iWatsonValidation
 {
     use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail,
-        tCbhModel;
+        tNyceModel;
 }

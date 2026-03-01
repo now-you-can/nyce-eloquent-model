@@ -5,7 +5,7 @@ namespace Nyce\DbModels\Builders;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder    as QueryBuilder;
 
-class CbhBuilder extends EloquentBuilder {
+class NyceBuilder extends EloquentBuilder {
 
     /**
      * Create a new Eloquent query builder instance.

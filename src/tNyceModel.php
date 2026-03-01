@@ -3,7 +3,7 @@
 namespace Nyce\DbModels;
 
 use Nyce\DbModels\sqlConditions\WhereCondition;
-use Nyce\DbModels\Builders\CbhBuilder;
+use Nyce\DbModels\Builders\NyceBuilder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,14 +13,14 @@ use Watson\Validating\ValidatingTrait as tWatsonValidation;
 use Exception;
 
 /**
- *  CbhModel{}
+ *  NyceModel{}
  *     Extends the underlying Laravel Eloquent/Model class, and rolls-in some bug fixes
  *     (or functional improvements to the base class) together with the best extensions
  *     already out there in the Composer/Laravel ecosystem.
  *
- *  @author Osian ap Garth / CBH Software
+ *  @author Osian ap Garth / Nyce Software
  */
-trait tCbhModel {
+trait tNyceModel {
 
     /**
      * Watson's validating functionality allows us to define constraints on data that is entered in colunms
@@ -89,7 +89,7 @@ trait tCbhModel {
      * initialize{traitName}() is like a constructor for Eloquent traits which
      * gets called automatically by the Eloquent base-class
      */
-    protected function initializetCbhModel() {
+    protected function initializetNyceModel() {
 
         $this->primaryKey = is_string($this->primaryKey) ? [$this->primaryKey] : [];
         $set_incrementing = false; // we set to false by default, forcing the user to define it in $col_settings
@@ -136,11 +136,11 @@ trait tCbhModel {
     /**
      * Override the standard Builder with my version...
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Nyce\DbModels\Builders\CbhBuilder which extends \Illuminate\Database\Eloquent\Builder|static
+     * @return \Nyce\DbModels\Builders\NyceBuilder which extends \Illuminate\Database\Eloquent\Builder|static
      */
     public function newEloquentBuilder ($query)
     {
-        return new CbhBuilder ($query, $this->getSelectExpr());
+        return new NyceBuilder ($query, $this->getSelectExpr());
     }
 
     /******
